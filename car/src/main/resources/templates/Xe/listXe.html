@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Le Dai Phat 21032441</h1>
+<a href="/xe/listXe">Danh sach xe</a>
+<a href="/loaixe/listLoaiXe">Danh sach loai xe</a>
+<a href="/xe/addXe">Them xe</a>
+<a href="/logout">Logout</a><br>
+<a href="/xe/list-api">Danh sach xe api</a>
+<a href="/xe/add-api">Them xe api</a>
+<h2>Danh sach xe</h2>
+<div>
+    <form action="/xe/listXe" method="get">
+        <input type="text" name="searchTerm" placeholder="Search">
+        <select name="searchCriteria">
+            <option value="tenXe">Tên xe</option>
+            <option value="namSx">Năm sx</option>
+        </select>
+        <button type="submit">Search</button>
+    </form>
+</div>
+<div th:switch="${xes}">
+    <h2 th:case="null">No xe yet!</h2>
+    <div th:case="*">
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Tên</th>
+                    <th>Giá</th>
+                    <th>Năm sx</th>
+                    <th>Loại</th>
+                    <th sec:authorize="hasRole('ADMIN')">Mã xe</th>
+                    <th sec:authorize="hasRole('ADMIN')">Ngày chỉnh sửa</th>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')">Trạng thái</th>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')">Chỉnh sửa</th>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')">Xóa</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="xe : ${xes}">
+                    <td th:text="${xe.id}"></td>
+                    <td th:text="${xe.tenXe}"></td>
+                    <td th:text="${xe.gia}"></td>
+                    <td th:text="${xe.namSx}"></td>
+                    <td th:text="${xe.maLoai.tenLoai}"></td>
+                    <td th:text="${xe.maXe}" sec:authorize="hasRole('ADMIN')"></td>
+                    <td th:text="${#temporals.format(xe.ngayChinhSua, 'yyyy-MM-dd')}" sec:authorize="hasRole('ADMIN')"></td>
+                    <td th:text="${xe.trangThai}" sec:authorize="hasRole('ADMIN')"></td>
+                    <td>
+                        <a th:href="@{'/xe/editXe/' + ${xe.id}}" sec:authorize="hasRole('ROLE_ADMIN')">Chỉnh sửa</a>
+                    </td>
+                    <td>
+                        <form th:action="@{'/xe/deleteXe/' + ${xe.id}}" method="post">
+                            <input type="submit" value="Xóa" sec:authorize="hasRole('ROLE_ADMIN')">
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+</div>
+
+</body>
+</html>

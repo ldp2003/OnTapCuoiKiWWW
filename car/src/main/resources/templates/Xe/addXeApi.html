@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add xe api</title>
+</head>
+<body>
+<h1>Le Dai Phat 21032441</h1>
+<a href="/xe/listXe">Danh sach xe</a>
+<a href="/loaixe/listLoaiXe">Danh sach loai xe</a>
+<a href="/xe/addXe">Them xe</a>
+<a href="/logout">Logout</a><br>
+<a href="/xe/list-api">Danh sach xe api</a>
+<a href="/xe/add-api">Them xe api</a>
+<h2>Add xe api</h2>
+<form action="#" th:action="@{/api/v1/xe/addApi}" th:object="${xe}" method="post">
+    <p>Tên: <input type="text" th:field="*{tenXe}" /></p>
+    <p>Giá: <input type="text" th:field="*{gia}" /></p>
+    <p>Năm sx: <input type="text" th:field="*{namSx}" /></p>
+    <p>Loại: <select th:field="*{maLoai}">
+        <option th:each="loaiXe : ${loaiXes}" th:value="${loaiXe.id}" th:text="${loaiXe.tenLoai}">
+    </select></p>
+    <p>Mã xe: <input type="text" name="maXe" th:value="${maXeRandom}" /></p>
+    <p>Ngày chỉnh sửa: <input type="date" th:field="*{ngayChinhSua}" /></p>
+    <p>Trạng thái:
+        <input type="radio" name="trangThai" value="1" checked/> Chap nhan
+        <input type="radio" name="trangThai" value="0" /> Khong chap nhan
+    </p>
+    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+</form>
+</body>
+</html>
